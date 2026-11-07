@@ -1,0 +1,39 @@
+{
+  "entities": {
+    "ShooterScore": {
+      "title": "ShooterScore",
+      "description": "감염병 전파 경로 슈팅 게임 점수 기록",
+      "type": "object",
+      "properties": {
+        "nickname": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 8,
+          "description": "사용자 닉네임 (한글 또는 영문 2~8자)"
+        },
+        "score": {
+          "type": "integer",
+          "description": "최종 게임 점수 (0 ~ 100000)"
+        },
+        "classCode": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "description": "학급 코드 (예: 5-1 또는 all)"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "기록 생성 시각"
+        }
+      },
+      "required": ["nickname", "score", "classCode", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/shooterScores/{scoreId}": {
+      "schema": "ShooterScore",
+      "description": "감염병 격파 대작전 리더보드 점수 목록"
+    }
+  }
+}

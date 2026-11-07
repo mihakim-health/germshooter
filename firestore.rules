@@ -1,0 +1,39 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 기본 전부 거부
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // 필드 4개만 허용 + score 정수 0~100000 + nickname 2~8자 + classCode 1~20자
+    function isValidScoreData(data) {
+      return data.keys().hasAll(['nickname', 'score', 'classCode', 'createdAt']) &&
+             data.keys().hasOnly(['nickname', 'score', 'classCode', 'createdAt']) &&
+             data.nickname is string &&
+             data.nickname.size() >= 2 &&
+             data.nickname.size() <= 8 &&
+             data.score is int &&
+             data.score >= 0 &&
+             data.score <= 100000 &&
+             data.classCode is string &&
+             data.classCode.size() >= 1 &&
+             data.classCode.size() <= 20 &&
+             (data.createdAt == request.time || data.createdAt is timestamp);
+    }
+
+    match /shooterScores/{scoreId} {
+      // shooterScores는 read 누구나
+      allow read: if true;
+      // create는 로그인 사용자만 + 필드 4개만 + score 정수 0~100000 + nickname 2~8자
+      allow create: if isSignedIn() && isValidScoreData(request.resource.data);
+      // update·delete 거부
+      allow update, delete: if false;
+    }
+  }
+}

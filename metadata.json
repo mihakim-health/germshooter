@@ -1,0 +1,6 @@
+{
+  "name": "면역 가디언스 - 감염병 전파 경로 격파 대작전",
+  "description": "초등 5학년 보건 '감염병 전파 경로' 레트로 우주 슈팅 게임. 소화기·호흡기·피부 감염병을 알맞은 백신 탄으로 격파하고 예방 수칙을 배워보세요!",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
